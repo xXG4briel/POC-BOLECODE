@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { writeFileSync } from 'fs';
-import { Boleto } from 'src/models/boleto';
+import { Boleto } from 'src/models/boleto/boleto';
 import { v4 } from 'uuid';
 
 @Injectable()

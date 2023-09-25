@@ -13,6 +13,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { UtilsService } from 'src/utils/utils.service';
+import { Boleto } from 'src/models/boleto/boleto';
 
 @Injectable()
 export class BolecodeService {
@@ -24,7 +25,7 @@ export class BolecodeService {
   ) {}
 
   async boletos_pix(
-    boleto: Bolecode,
+    boleto: Boleto,
   ): Promise<Observable<AxiosResponse<any, any>>> {
     const token = await this.cacheManager.get<string>('token');
 
