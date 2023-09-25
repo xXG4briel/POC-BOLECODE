@@ -1,0 +1,11 @@
+### AUTH
+POST http://localhost:3000/auth HTTP/1.1
+Content-Type: application/json
+
+{
+    "client_id": "SEU_CLIENT_ID",
+    "client_secret": "SEU_CLIENT_SECRET"
+}
+
+### BOLECODE
+POST http://localhost:3000/bolecode/boletos_pix HTTP/1.1
