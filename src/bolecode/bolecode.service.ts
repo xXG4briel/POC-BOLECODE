@@ -4,6 +4,7 @@ import {
   UnauthorizedException,
   Logger,
   HttpException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { Bolecode } from 'src/models/bolecode/bolecode';
 import { HttpService } from '@nestjs/axios';
@@ -31,8 +32,10 @@ export class BolecodeService {
       throw new UnauthorizedException('É necessário gerar um token !');
     }
 
+    this.logger.log('Token encontrado !');
+
     const API_URL =
-      'https://devportal.itau.com.br/sandboxapi/itau-ep9-gtw-pix-recebimentos-conciliacoes-v2-ext/';
+      'https://devportal.itau.com.br/sandboxapi/itau-ep9-gtw-pix-recebimentos-conciliacoes-v2-ext/v2/boletos_pix';
 
     return this.httpService
       .post(API_URL, boleto, {
@@ -42,7 +45,20 @@ export class BolecodeService {
       })
       .pipe(
         map((result) => {
-          this.utils.base64ToImg(result.data.dados_qrcode.base64);
+          const { data } = result.data;
+
+          this.utils
+            .base64ToImg(data.dados_qrcode.base64)
+            .then(() => {
+              this.logger.log('Arquivo gerado com sucesso');
+            })
+            .catch((err) => {
+              this.logger.error(err);
+              throw new InternalServerErrorException(
+                'Não foi possível gerar o Bolecode',
+              );
+            });
+
           return result.data;
         }),
         catchError((error: AxiosError) => {

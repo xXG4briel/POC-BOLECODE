@@ -1,20 +1,25 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { writeFileSync } from 'fs';
-import { Bolecode } from 'src/models/bolecode/bolecode';
+import { Boleto } from 'src/models/boleto';
 import { v4 } from 'uuid';
 
 @Injectable()
 export class UtilsService {
   base64ToImg(base64: string) {
-    try {
-      const buffer = Buffer.from(base64, 'base64');
+    return new Promise((resolve) => {
+      try {
+        const buffer = Buffer.from(base64, 'base64');
 
-      writeFileSync(`./src/assets/imgs/bolecode/${v4()}.jpg`, buffer);
-    } catch (err) {
-      console.error(err);
-    }
+        writeFileSync(`./src/assets/imgs/bolecode/${v4()}.jpg`, buffer);
+
+        resolve(true);
+      } catch (err) {
+        return err;
+      }
+    });
   }
-  getBoletoAleatorio(): Bolecode {
+  getBoletoAleatorio(): Boleto {
     return {
       etapa_processo_boleto: 'efetivacao',
       beneficiario: {

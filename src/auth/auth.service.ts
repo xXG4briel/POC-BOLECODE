@@ -28,6 +28,8 @@ export class AuthService {
         map(async (response) => {
           await this.cacheManager.set('token', response.data.access_token, 0);
 
+          this.logger.log('Token gerado com sucesso !');
+
           return response.data;
         }),
       );
